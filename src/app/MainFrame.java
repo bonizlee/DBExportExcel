@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -9,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -200,9 +202,14 @@ public class MainFrame extends JFrame {
 	}
 	
 	private boolean check(JTextField textfield) {
-		if(textfield==null||textfield.getText().equals(""))
+		if(textfield==null||textfield.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "请填入数据库日期", "错误",JOptionPane.WARNING_MESSAGE);  
 			return false;
-		else
-			return true;
+		}
+		if(jCity.getSelectedIndices().length==0&&!chkSummary.isSelected()) {			
+			JOptionPane.showMessageDialog(this, "请选择地市或勾选汇总", "错误",JOptionPane.WARNING_MESSAGE);  
+			return false;
+		}			
+		return true;
 	}
 }

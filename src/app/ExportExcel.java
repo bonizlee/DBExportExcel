@@ -71,7 +71,7 @@ public class ExportExcel<T> {
 	     * @param pattern 
 	     *            如果有时间数据，设定输出格式。默认为"yyyy-MM-dd" 
 	     */  
-	    @SuppressWarnings({ "unchecked", "deprecation" })  
+	    
 	    public void exportExcel(String title, String[] headers,  
 	            Collection<T> dataset, OutputStream out, String pattern)  
 	    {  
@@ -137,7 +137,7 @@ public class ExportExcel<T> {
 	        HSSFRow row = sheet.createRow(0);  
 	        for (short i = 0; i < headers.length; i++)  
 	        {  
-	        	sheet.setColumnWidth(i, headers[i].getBytes().length*256);//根据标题内容设置列宽度
+	        	sheet.setColumnWidth(i, headers[i].getBytes().length*2*256);//根据标题内容设置列宽度
 	        	
 	            HSSFCell cell = row.createCell(i);  
 	            cell.setCellStyle(style);  
