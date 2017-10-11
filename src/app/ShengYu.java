@@ -4,22 +4,25 @@ import java.util.Date;
 
 public class ShengYu {
 	String fzjg;// 发证机关
-	String hphm;// 号牌号码 
-	String clxh;// 车辆型号 
-	String syxz;// 使用性质 
-	String cllx;// 车辆类型 
-	String clsbdh;// 车辆识别代码（VIN号后6位） 
-	Date ccdjrq;// 初次登记日期 
-	String rlzl;//燃料种类 
+	String xzqh;
+	String hphm;// 号牌号码
+	String clxh;// 车辆型号
+	String syxz;// 使用性质
+	String cllx;// 车辆类型
+	String clsbdh;// 车辆识别代码（VIN号后6位）
+	Date ccdjrq;// 初次登记日期
+	String rlzl;// 燃料种类
 	Date qzbfqz;// 强制报废期止
 	String zt;// 状态
-	
-	public ShengYu() {}
-	
-	public ShengYu(String fzjg, String hphm, String clxh, String syxz, String cllx, String clsbdh, Date ccdjrq,
-			String rlzl, Date qzbfqz, String zt) {
+
+	public ShengYu() {
+	}
+
+	public ShengYu(String fzjg, String xzqh, String hphm, String clxh, String syxz, String cllx, String clsbdh,
+			Date ccdjrq, String rlzl, Date qzbfqz, String zt) {
 		super();
 		this.fzjg = fzjg;
+		this.xzqh = xzqh;
 		this.hphm = hphm;
 		this.clxh = clxh;
 		this.syxz = syxz;
@@ -37,6 +40,15 @@ public class ShengYu {
 
 	public void setFzjg(String fzjg) {
 		this.fzjg = fzjg;
+	}
+
+	
+	public String getXzqh() {
+		return xzqh;
+	}
+
+	public void setXzqh(String xzqh) {
+		this.xzqh = xzqh;
 	}
 
 	public String getHphm() {

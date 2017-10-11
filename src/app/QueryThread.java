@@ -23,11 +23,11 @@ public class QueryThread implements Runnable {
 	private QueryType type;
 	private String filename;
 
-	private String taotaisql= "select fzjg,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt from TAOTAI_%s where fzjg='%s'";
+	private String taotaisql= "select fzjg,xzqh,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt from TAOTAI_%s where fzjg='%s'";
 	
-	private String shengyusql="select fzjg,hphm,clxh,syxz,cllx,clsbdh,ccdjrq,rlzl,qzbfqz,zt from sy_hbc_2016_qiang2 where xh not in(select xh from taotai_%s) and fzjg='%s'";
+	private String shengyusql="select fzjg,xzqh,hphm,clxh,syxz,cllx,clsbdh,ccdjrq,rlzl,qzbfqz,zt from sy_hbc_2016_qiang2 where xh not in(select xh from taotai_%s) and fzjg='%s'";
 	
-	private String msql="select fzjg,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt from M_%s where fzjg='%s'";
+	private String msql="select fzjg,xzqh,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt from M_%s where fzjg='%s'";
 	
 	private String citysql = "select o.order_id,o.index_name," 
 			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,"
@@ -165,13 +165,13 @@ public class QueryThread implements Runnable {
 
 				result = pre.executeQuery();
 				while (result.next()) {
-					ttList.add(new TaoTai(result.getString("fzjg"),result.getString("hphm"),result.getString("hpzl"),
+					ttList.add(new TaoTai(result.getString("fzjg"),result.getString("xzqh"),result.getString("hphm"),result.getString("hpzl"),
 							result.getString("clxh"),result.getString("cllx"),result.getString("rlzl"),result.getString("hdzk"),
 							result.getString("zzl"),result.getString("syxz"),result.getDate("ccdjrq"),result.getString("zt") ));
 				}
 
 				ExportExcel<TaoTai> expTaoTai = new ExportExcel<TaoTai>();
-				String[] titleCityCode = new String[] { "发证机关", "号牌号码", "号牌种类", "车辆型号","车辆类型", "燃料种类","核定载客", 
+				String[] titleCityCode = new String[] { "发证机关", "行政区划","号牌号码", "号牌种类", "车辆型号","车辆类型", "燃料种类","核定载客", 
 					"总质量", "使用性质","初次登记日期","状态" };
 				OutputStream out = new FileOutputStream(
 						System.getProperty("user.dir") + File.separator + filename + "_" + city + ".xls");
@@ -216,13 +216,13 @@ public class QueryThread implements Runnable {
 
 				result = pre.executeQuery();
 				while (result.next()) {
-					syList.add(new ShengYu(result.getString("fzjg"),result.getString("hphm"),result.getString("clxh"),
+					syList.add(new ShengYu(result.getString("fzjg"),result.getString("xzqh"),result.getString("hphm"),result.getString("clxh"),
 							result.getString("syxz"),result.getString("cllx"),result.getString("clsbdh"),result.getDate("ccdjrq"),
 							result.getString("rlzl"),result.getDate("qzbfqz"),result.getString("zt") ));
 				}
 
 				ExportExcel<ShengYu> expShengYu = new ExportExcel<ShengYu>();
-				String[] titleCityCode = new String[] { "发证机关", "号牌号码", "车辆型号","使用性质","车辆类型",
+				String[] titleCityCode = new String[] { "发证机关","行政区划", "号牌号码", "车辆型号","使用性质","车辆类型",
 						"车辆识别代码（VIN号后6位）", "初次登记日期","燃料种类","强制报废期止", "状态" };
 				OutputStream out = new FileOutputStream(
 						System.getProperty("user.dir") + File.separator + filename + "_" + city + ".xls");
