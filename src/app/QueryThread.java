@@ -394,6 +394,7 @@ public class QueryThread implements Runnable {
 	public void run() {
 		switch (type) {
 		case PF:
+		case IN:
 			queryPaiFang();
 			break;
 		case TT:
@@ -405,6 +406,7 @@ public class QueryThread implements Runnable {
 		case SY:
 			queryShengYu();
 			break;
+		
 		default:
 			break;
 		}

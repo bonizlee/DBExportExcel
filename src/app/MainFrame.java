@@ -31,6 +31,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	JButton btnQueryTT;
 	JButton btnQueryM;
 	JButton btnQuerySY;
+	JButton btnQueryIN;
 
 	JTextField textPfDb;
 	JTextField textHbDb;
@@ -75,9 +76,15 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		JPanel pbutton = new JPanel();
 		btnQueryPF = new JButton("导出排放数据");
-		pbutton.add(btnQueryPF);
 		btnQueryPF.setActionCommand(QueryType.PF.toString());
 		btnQueryPF.addActionListener(this);
+		pbutton.add(btnQueryPF);
+		
+		
+		btnQueryIN=new JButton("迁入类排放数据");
+		btnQueryIN.setActionCommand(QueryType.IN.toString());
+		btnQueryIN.addActionListener(this);
+		pbutton.add(btnQueryIN);
 
 		pfPanel.add(plabel);
 		pfPanel.add(pDB);
@@ -194,6 +201,11 @@ public class MainFrame extends JFrame implements ActionListener {
 			if (!check(textHbDb)) return;
 			dbname = textHbDb.getText();
 			filename = String.format("截止至%s_%s", dbname, textMFile.getText());
+			break;			
+		case IN:
+			if(!check(textPfDb)) return;
+			dbname = textPfDb.getText();
+			filename=String.format("截止至%s迁入按排放分类统计", dbname);
 			break;
 		default:
 			return;			
