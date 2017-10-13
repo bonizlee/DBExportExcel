@@ -11,7 +11,7 @@ import java.util.EnumSet;
 public enum CityCode{
 	A("广州","A"),B("深圳","B"),C("珠海","C"),D("汕头","D"),E("佛山","E"),F("韶关","F"),G("湛江","G"),
 	H("肇庆","H"),J("江门","J"),K("茂名","K"),L("惠州","L"),M("梅州","M"),N("汕尾","N"),P("河源","P"),
-	Q("阳江","Q"),R("清远","R"),S("东莞","S"),T("中山","T"),U("汕头","U"),V("揭阳","V"),W("云浮","W"),
+	Q("阳江","Q"),R("清远","R"),S("东莞","S"),T("中山","T"),U("潮州","U"),V("揭阳","V"),W("云浮","W"),
 	X("顺德","X"),Y("南海","Y");
 	
 	private String city;
@@ -30,6 +30,8 @@ public enum CityCode{
 	public static String getCity(String k) {
 		EnumSet<CityCode> cityset=EnumSet.allOf(CityCode.class);
 		String city="";
+		if(k.length()>1)
+			k=k.substring(1, 2);
 		for (CityCode cityCode : cityset) {
 			if(cityCode.key.equals(k))
 				city=cityCode.city;

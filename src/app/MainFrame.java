@@ -16,8 +16,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-public class MainFrame extends JFrame {
-	
+public class MainFrame extends JFrame implements ActionListener {
+
 	private static final long serialVersionUID = 1729233823098776690L;
 	static final String[] cities = CityCode.getCities();
 
@@ -31,9 +31,12 @@ public class MainFrame extends JFrame {
 	JButton btnQueryTT;
 	JButton btnQueryM;
 	JButton btnQuerySY;
-	
+
 	JTextField textPfDb;
 	JTextField textHbDb;
+	JTextField textMFile;
+	JTextField textTTFile;
+	JTextField textSyFile;
 
 	public MainFrame() {
 		Container cp = getContentPane();
@@ -73,13 +76,15 @@ public class MainFrame extends JFrame {
 		JPanel pbutton = new JPanel();
 		btnQueryPF = new JButton("导出排放数据");
 		pbutton.add(btnQueryPF);
+		btnQueryPF.setActionCommand(QueryType.PF.toString());
+		btnQueryPF.addActionListener(this);
 
 		pfPanel.add(plabel);
 		pfPanel.add(pDB);
 		pfPanel.add(pbutton);
 		// ---排放统计结束---
-		
-		//---黄标车统计开始--
+
+		// ---黄标车统计开始--
 		JPanel hlabel = new JPanel();
 		hlabel.add(new JLabel("统计黄标车情况"));
 		JPanel hDB = new JPanel();
@@ -89,98 +94,47 @@ public class MainFrame extends JFrame {
 		hbPanel.add(hlabel);
 		hbPanel.add(hDB);
 
-		//---淘汰清单
+		// ---淘汰清单
 		JPanel ttPanel = new JPanel();
 		ttPanel.add(new JLabel("文件名："));
-		JTextField textTTFile = new JTextField("黄标车淘汰数据清单");
+		textTTFile = new JTextField("黄标车淘汰数据清单");
 		btnQueryTT = new JButton("导出已淘汰清单");
+		btnQueryTT.setActionCommand(QueryType.TT.toString());
+		btnQueryTT.addActionListener(this);
 		ttPanel.add(textTTFile);
-		ttPanel.add(btnQueryTT);		
+		ttPanel.add(btnQueryTT);
 		hbPanel.add(ttPanel);
-		
-		//-----M状态清单
+
+		// -----M状态清单
 		JPanel mPanel = new JPanel();
 		mPanel.add(new JLabel("文件名："));
-		JTextField textMFile = new JTextField("黄标车强制注销未淘汰数据清单");
+		textMFile = new JTextField("黄标车强制注销未淘汰数据清单");
 		btnQueryM = new JButton("导出强制注销未淘汰清单");
+		btnQueryM.setActionCommand(QueryType.M.toString());
+		btnQueryM.addActionListener(this);
 		mPanel.add(textMFile);
-		mPanel.add(btnQueryM);		
+		mPanel.add(btnQueryM);
 		hbPanel.add(mPanel);
-		
-		//---剩余黄标车
+
+		// ---剩余黄标车
 		JPanel syPanel = new JPanel();
 		syPanel.add(new JLabel("文件名："));
-		JTextField textSyFile = new JTextField("剩余黄标车数据清单");
+		textSyFile = new JTextField("剩余黄标车数据清单");
 		btnQuerySY = new JButton("导出剩余黄标车清单");
+		btnQuerySY.setActionCommand(QueryType.SY.toString());
+		btnQuerySY.addActionListener(this);
 		syPanel.add(textSyFile);
-		syPanel.add(btnQuerySY);		
+		syPanel.add(btnQuerySY);
 		hbPanel.add(syPanel);
-		
-		//---黄标车统计结束--
 
-		//----状态栏，备用
+		// ---黄标车统计结束--
+
+		// ----状态栏，备用
 		JPanel pstatus = new JPanel();
 		pstatus.add(status1);
 		pstatus.add(status2);
 		pstatus.add(status3);
-		//---状态栏
-		
-		btnQueryPF.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!check(textPfDb))
-					return;
-				String dbname = textPfDb.getText();
-				String[] selcity;
-				selcity = getSelectCities();
-				Thread t = new Thread(new QueryThread(QueryType.PF,dbname, selcity, null));
-				t.start();
-			}
-		});
-		
-		btnQueryTT.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!check(textHbDb))
-					return;
-				String dbname=textHbDb.getText();
-				String[] selcity;
-				selcity = getSelectCities();
-				String filename=String.format("截止至%s_%s", dbname,textTTFile.getText());				
-				Thread t = new Thread(new QueryThread(QueryType.TT,dbname, selcity, filename));
-				t.start();
-			}
-		});
-		
-		btnQueryM.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!check(textHbDb))
-					return;
-				String dbname=textHbDb.getText();
-				String[] selcity;
-				selcity = getSelectCities();
-				String filename=String.format("截止至%s_%s", dbname,textMFile.getText());				
-				Thread t = new Thread(new QueryThread(QueryType.M,dbname, selcity, filename));
-				t.start();				
-			}
-		});
-		
-		btnQuerySY.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(!check(textHbDb))
-					return;
-				String dbname=textHbDb.getText();
-				String[] selcity;
-				selcity = getSelectCities();
-				String filename=String.format("截止至%s_%s", dbname,textSyFile.getText());				
-				Thread t = new Thread(new QueryThread(QueryType.SY,dbname, selcity, filename));
-				t.start();
-				
-			}
-		});
-
+		// ---状态栏
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setLocation(600, 250);
@@ -200,16 +154,51 @@ public class MainFrame extends JFrame {
 		}
 		return selcity;
 	}
-	
+
 	private boolean check(JTextField textfield) {
-		if(textfield==null||textfield.getText().equals("")) {
-			JOptionPane.showMessageDialog(this, "请填入数据库日期", "错误",JOptionPane.WARNING_MESSAGE);  
+		if (textfield == null || textfield.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "请填入数据库日期", "错误", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		if(jCity.getSelectedIndices().length==0&&!chkSummary.isSelected()) {			
-			JOptionPane.showMessageDialog(this, "请选择地市或勾选汇总", "错误",JOptionPane.WARNING_MESSAGE);  
+		if (jCity.getSelectedIndices().length == 0 && !chkSummary.isSelected()) {
+			JOptionPane.showMessageDialog(this, "请选择地市或勾选汇总", "错误", JOptionPane.WARNING_MESSAGE);
 			return false;
-		}			
+		}
 		return true;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String filename = "";
+		QueryType querytype = QueryType.getType(e.getActionCommand());
+		String dbname = "";
+		
+		String[] selcity = getSelectCities();
+		switch (querytype) {
+		case PF:
+			if(!check(textPfDb)) return;
+			dbname = textPfDb.getText();
+			filename=String.format("截止至%s排放分类统计", dbname);
+			break;
+		case TT:
+			if (!check(textHbDb)) return;
+			dbname = textHbDb.getText();
+			filename = String.format("截止至%s_%s", dbname, textTTFile.getText());
+			break;
+		case SY:
+			if (!check(textHbDb)) return;
+			dbname = textHbDb.getText();
+			filename = String.format("截止至%s_%s", dbname, textSyFile.getText());
+			break;
+		case M:
+			if (!check(textHbDb)) return;
+			dbname = textHbDb.getText();
+			filename = String.format("截止至%s_%s", dbname, textMFile.getText());
+			break;
+		default:
+			return;			
+		}
+		Thread t = new Thread(new QueryThread(querytype, dbname, selcity, filename));
+		t.start();
 	}
 }
