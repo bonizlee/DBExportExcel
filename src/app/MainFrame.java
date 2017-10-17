@@ -32,6 +32,8 @@ public class MainFrame extends JFrame implements ActionListener {
 	JButton btnQueryM;
 	JButton btnQuerySY;
 	JButton btnQueryIN;
+	JButton btnQueryOUT;
+	JButton btnQueryLOGOUT;
 
 	JTextField textPfDb;
 	JTextField textHbDb;
@@ -75,20 +77,31 @@ public class MainFrame extends JFrame implements ActionListener {
 		pDB.add(textPfDb);
 
 		JPanel pbutton = new JPanel();
-		btnQueryPF = new JButton("导出排放数据");
+		btnQueryPF = new JButton("导出保有量排放数据");
 		btnQueryPF.setActionCommand(QueryType.PF.toString());
 		btnQueryPF.addActionListener(this);
 		pbutton.add(btnQueryPF);
 		
-		
+		JPanel pInout = new JPanel();
 		btnQueryIN=new JButton("迁入类排放数据");
 		btnQueryIN.setActionCommand(QueryType.IN.toString());
 		btnQueryIN.addActionListener(this);
-		pbutton.add(btnQueryIN);
+		pInout.add(btnQueryIN);
+		
+		btnQueryOUT=new JButton("迁出类排放数据");
+		btnQueryOUT.setActionCommand(QueryType.OUT.toString());
+		btnQueryOUT.addActionListener(this);
+		pInout.add(btnQueryOUT);
+		
+		btnQueryLOGOUT=new JButton("注销类排放数据");
+		btnQueryLOGOUT.setActionCommand(QueryType.LOGOUT.toString());
+		btnQueryLOGOUT.addActionListener(this);
+		pInout.add(btnQueryLOGOUT);
 
 		pfPanel.add(plabel);
 		pfPanel.add(pDB);
 		pfPanel.add(pbutton);
+		pfPanel.add(pInout);
 		// ---排放统计结束---
 
 		// ---黄标车统计开始--
@@ -206,6 +219,16 @@ public class MainFrame extends JFrame implements ActionListener {
 			if(!check(textPfDb)) return;
 			dbname = textPfDb.getText();
 			filename=String.format("截止至%s迁入按排放分类统计", dbname);
+			break;
+		case OUT:
+			if(!check(textPfDb)) return;
+			dbname = textPfDb.getText();
+			filename=String.format("截止至%s迁出按排放分类统计", dbname);
+			break;
+		case LOGOUT:			
+			if(!check(textPfDb)) return;
+			dbname = textPfDb.getText();
+			filename=String.format("截止至%s注销按排放分类统计", dbname);
 			break;
 		default:
 			return;			

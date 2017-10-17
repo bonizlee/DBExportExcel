@@ -395,6 +395,8 @@ public class QueryThread implements Runnable {
 		switch (type) {
 		case PF:
 		case IN:
+		case OUT:
+		case LOGOUT:
 			queryPaiFang();
 			break;
 		case TT:
