@@ -29,10 +29,11 @@ public class QueryThread implements Runnable {
 	private Map<String, Object> words;
 
 	private String taotaisql = "select fzjg,xzqh,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt "
-			+ "from TAOTAI_{DBDate} where fzjg='{City}'";
+			+ "from TAOTAI_{DBDate} where city='{City}'";
 
-	private String shengyusql = "select fzjg,xzqh,hphm,clxh,syxz,cllx,clsbdh,ccdjrq,rlzl,qzbfqz,zt "
-			+ "from sy_hbc_2016_qiang2 where xh not in(select xh from taotai_{DBDate}) and fzjg='{City}'";
+	private String shengyusql = "select vc.fzjg,vc.xzqh,vc.hphm,vc.clxh,vc.syxz,vc.cllx,vc.clsbdh,vc.ccdjrq,vc.rlzl,vc.qzbfqz,vc.zt "
+			+ "from VEHICLE_HBT_{DBDate} vc , SY_HBC_2016_all v5 where "
+			+ "vc.xh=v5.xh and instr(vc.zt,'E')=0 and instr(vc.zt,'P')=0 and vc.fzjg='{City}'";
 
 	private String msql = "select fzjg,xzqh,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt "
 			+ "from M_{DBDate} where fzjg='{City}'";
