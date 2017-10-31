@@ -39,6 +39,82 @@ public class QueryThread implements Runnable {
 			+ "from M_{DBDate} where fzjg='{City}'";
 
 	private String dateTemplate = "to_date('{year}/{month}/{day}','yyyy/mm/dd')";
+	
+	private String logoutsql2016 = "select o.order_id,o.index_name,\r\n" + 
+			"case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n" + 
+			"case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n" + 
+			"case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n" + 
+			"case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n" + 
+			"case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n" + 
+			"case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + 
+			"from index_order o\r\n" + 
+			"left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
+			"where pf.xh=v.xh and pf.pf=0 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
+			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n" + 
+			"left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
+			"where pf.xh=v.xh and pf.pf=1 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
+			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name \r\n" + 
+			"left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
+			"where pf.xh=v.xh and pf.pf=2 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
+			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf2 on o.index_name=pf2.index_name \r\n" + 
+			"left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
+			"where pf.xh=v.xh and pf.pf=3 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
+			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf3 on o.index_name=pf3.index_name \r\n" + 
+			"left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
+			"where pf.xh=v.xh and pf.pf=4 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
+			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf4 on o.index_name=pf4.index_name \r\n" + 
+			"left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
+			"where pf.xh=v.xh and pf.pf=5 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
+			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name \r\n" + 
+			"order by o.order_id";
+	
+	private String inpfsql2016 = "select o.order_id,o.index_name,\r\n"
+			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n"
+			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n"
+			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n"
+			+ "case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n"
+			+ "case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n"
+			+ "case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + "from index_order o\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from pf0_{DBDate} pf,veh_in_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and v.zrrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zrrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from pf1_{DBDate} pf,veh_in_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and v.zrrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zrrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}'  group by index_name) pf1 on o.index_name=pf1.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from pf2_{DBDate} pf,veh_in_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and v.zrrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zrrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}'  group by index_name) pf2 on o.index_name=pf2.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from pf3_{DBDate} pf,veh_in_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and v.zrrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zrrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}'  group by index_name) pf3 on o.index_name=pf3.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from pf4_{DBDate} pf,veh_in_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and v.zrrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zrrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}'  group by index_name) pf4 on o.index_name=pf4.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf,veh_in_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and v.zrrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zrrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}'  group by index_name) pf5 on o.index_name=pf5.index_name \r\n"
+			+ "order by o.order_id";
+
+	private String outpfsql2016 = "select o.order_id,o.index_name,\r\n"
+			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 , \r\n"
+			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n"
+			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n"
+			+ "case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n"
+			+ "case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n"
+			+ "case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + "from index_order o\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_out_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' and v.djrq >= to_date('2016/07/01','yyyy/mm/dd') and v.djrq < to_date('2017/01/01','yyyy/mm/dd') \r\n"
+			+ "and pf.pf=0 and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_out_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' and v.djrq >= to_date('2016/07/01','yyyy/mm/dd') and v.djrq < to_date('2017/01/01','yyyy/mm/dd') \r\n"
+			+ "and pf.pf=1 and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_out_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' and v.djrq >= to_date('2016/07/01','yyyy/mm/dd') and v.djrq < to_date('2017/01/01','yyyy/mm/dd') \r\n"
+			+ "and pf.pf=2 and pf.FZJG='{City}' group by index_name) pf2 on o.index_name=pf2.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_out_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' and v.djrq >= to_date('2016/07/01','yyyy/mm/dd') and v.djrq < to_date('2017/01/01','yyyy/mm/dd') \r\n"
+			+ "and pf.pf=3 and pf.FZJG='{City}' group by index_name) pf3 on o.index_name=pf3.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_out_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' and v.djrq >= to_date('2016/07/01','yyyy/mm/dd') and v.djrq < to_date('2017/01/01','yyyy/mm/dd') \r\n"
+			+ "and pf.pf=4 and pf.FZJG='{City}' group by index_name) pf4 on o.index_name=pf4.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_out_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' and v.djrq >= to_date('2016/07/01','yyyy/mm/dd') and v.djrq < to_date('2017/01/01','yyyy/mm/dd') \r\n"
+			+ "and pf.pf=5 and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name\r\n"
+			+ "order by o.order_id";
 
 	private String logoutsql2017="select o.order_id,o.index_name,\r\n" + 
 			"case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n" + 
@@ -50,7 +126,7 @@ public class QueryThread implements Runnable {
 			"from index_order o\r\n" + 
 			"left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
 			"where pf.xh=v.xh and pf.pf=0 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n" + 
+			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n" + 
 			"left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
 			"where pf.xh=v.xh and pf.pf=1 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
 			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name \r\n" + 
@@ -226,6 +302,15 @@ public class QueryThread implements Runnable {
 					case LOGOUT:
 						sql=logoutsql2017;
 						break;
+					case IN2016:
+						sql=inpfsql2016;
+						break;
+					case OUT2016:
+						sql=outpfsql2016;
+						break;
+					case LOGOUT2016:
+						sql=logoutsql2016;
+						break;
 					default:
 						break;
 					}
@@ -398,6 +483,9 @@ public class QueryThread implements Runnable {
 		case IN:
 		case OUT:
 		case LOGOUT:
+		case IN2016:
+		case OUT2016:
+		case LOGOUT2016:
 			queryPaiFang();
 			break;
 		case TT:

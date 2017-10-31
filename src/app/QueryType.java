@@ -37,7 +37,11 @@ public enum QueryType {
 	/**
 	 * 注销
 	 */
-	LOGOUT;
+	LOGOUT,
+	OUT2016,
+	IN2016,
+	LOGOUT2016
+	;
 	
 	public static QueryType getType(String name) {
 		EnumSet<QueryType> typeset=EnumSet.allOf(QueryType.class);
