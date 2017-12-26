@@ -31,7 +31,7 @@ public class QueryThread implements Runnable {
 	private String taotaisql = "select fzjg,xzqh,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt "
 			+ "from TAOTAI_{DBDate} where city='{City}'";
 
-	private String shengyusql = "select vc.fzjg,vc.xzqh,vc.hphm,vc.clxh,vc.syxz,vc.cllx,vc.clsbdh,vc.ccdjrq,vc.rlzl,vc.qzbfqz,vc.zt "
+	private String shengyusql = "select vc.fzjg,vc.xzqh,vc.hphm,vc.hpzl,vc.clxh,vc.syxz,vc.cllx,vc.clsbdh,vc.ccdjrq,vc.rlzl,vc.qzbfqz,vc.zt "
 			+ "from VEHICLE_HBT_{DBDate} vc , SY_HBC_2016_all v5 where "
 			+ "vc.xh=v5.xh and instr(vc.zt,'E')=0 and instr(vc.zt,'P')=0 and vc.fzjg='{City}'";
 
@@ -430,13 +430,13 @@ public class QueryThread implements Runnable {
 				result = pre.executeQuery();
 				while (result.next()) {
 					syList.add(new ShengYu(result.getString("fzjg"), result.getString("xzqh"), result.getString("hphm"),
-							result.getString("clxh"), result.getString("syxz"), result.getString("cllx"),
-							result.getString("clsbdh"), result.getDate("ccdjrq"), result.getString("rlzl"),
-							result.getDate("qzbfqz"), result.getString("zt")));
+							result.getString("hpzl"),result.getString("clxh"), result.getString("syxz"), 
+							result.getString("cllx"),result.getString("clsbdh"), result.getDate("ccdjrq"), 
+							result.getString("rlzl"),result.getDate("qzbfqz"), result.getString("zt")));
 				}
 
 				ExportExcel<ShengYu> expShengYu = new ExportExcel<ShengYu>();
-				String[] titleCityCode = new String[] { "发证机关", "行政区划", "号牌号码", "车辆型号", "使用性质", "车辆类型",
+				String[] titleCityCode = new String[] { "发证机关", "行政区划", "号牌号码", "号牌种类","车辆型号", "使用性质", "车辆类型",
 						"车辆识别代码（VIN号后6位）", "初次登记日期", "燃料种类", "强制报废期止", "状态" };
 				OutputStream out = new FileOutputStream(System.getProperty("user.dir") + File.separator + filename + "_"
 						+ CityCode.getCity(city) + ".xls");
@@ -471,7 +471,7 @@ public class QueryThread implements Runnable {
 		System.out.println("开始尝试连接数据库！");
 		String url = "jdbc:oracle:" + "thin:@127.0.0.1:1521:HBTDB";// 127.0.0.1是本机地址，XE是精简版Oracle的默认数据库名
 		String user = "flowerszhong";// 用户名,系统默认的账户名
-		String password = "3pang";// 你安装时选设置的密码
+		String password = "852963";// 你安装时选设置的密码
 		con = DriverManager.getConnection(url, user, password);// 获取连接
 		return con;
 	}

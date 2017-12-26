@@ -4,8 +4,9 @@ import java.util.Date;
 
 public class ShengYu {
 	String fzjg;// 发证机关
-	String xzqh;
+	String xzqh;// 行政区划
 	String hphm;// 号牌号码
+	String hpzl;// 号牌种类
 	String clxh;// 车辆型号
 	String syxz;// 使用性质
 	String cllx;// 车辆类型
@@ -18,12 +19,13 @@ public class ShengYu {
 	public ShengYu() {
 	}
 
-	public ShengYu(String fzjg, String xzqh, String hphm, String clxh, String syxz, String cllx, String clsbdh,
+	public ShengYu(String fzjg, String xzqh, String hphm, String hpzl, String clxh, String syxz, String cllx, String clsbdh,
 			Date ccdjrq, String rlzl, Date qzbfqz, String zt) {
 		super();
 		this.fzjg = fzjg;
 		this.xzqh = xzqh;
 		this.hphm = hphm;
+		this.hpzl = hpzl;
 		this.clxh = clxh;
 		this.syxz = syxz;
 		this.cllx = cllx;
@@ -122,4 +124,13 @@ public class ShengYu {
 	public void setZt(String zt) {
 		this.zt = zt;
 	}
+
+	public String getHpzl() {
+		return hpzl;
+	}
+
+	public void setHpzl(String hpzl) {
+		this.hpzl = hpzl;
+	}
+	
 }
