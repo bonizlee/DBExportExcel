@@ -39,35 +39,34 @@ public class QueryThread implements Runnable {
 			+ "from M_{DBDate} where fzjg='{City}'";
 
 	private String dateTemplate = "to_date('{year}/{month}/{day}','yyyy/mm/dd')";
-	
-	private String logoutsql2016 = "select o.order_id,o.index_name,\r\n" + 
-			"case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n" + 
-			"case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n" + 
-			"case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n" + 
-			"case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n" + 
-			"case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n" + 
-			"case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + 
-			"from index_order o\r\n" + 
-			"left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=0 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n" + 
-			"left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=1 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=2 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf2 on o.index_name=pf2.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=3 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf3 on o.index_name=pf3.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=4 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf4 on o.index_name=pf4.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=5 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name \r\n" + 
-			"order by o.order_id";
-	
+
+	private String logoutsql2016 = "select o.order_id,o.index_name,\r\n"
+			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n"
+			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n"
+			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n"
+			+ "case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n"
+			+ "case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n"
+			+ "case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + "from index_order o\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=0 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=1 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=2 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf2 on o.index_name=pf2.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=3 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf3 on o.index_name=pf3.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=4 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf4 on o.index_name=pf4.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=5 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2016/07/01','yyyy/mm/dd') and v.zxrq < to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name \r\n"
+			+ "order by o.order_id";
+
 	private String inpfsql2016 = "select o.order_id,o.index_name,\r\n"
 			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n"
 			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n"
@@ -116,34 +115,33 @@ public class QueryThread implements Runnable {
 			+ "and pf.pf=5 and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name\r\n"
 			+ "order by o.order_id";
 
-	private String logoutsql2017="select o.order_id,o.index_name,\r\n" + 
-			"case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n" + 
-			"case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n" + 
-			"case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n" + 
-			"case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n" + 
-			"case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n" + 
-			"case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + 
-			"from index_order o\r\n" + 
-			"left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=0 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n" + 
-			"left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=1 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=2 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf2 on o.index_name=pf2.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=3 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf3 on o.index_name=pf3.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=4 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf4 on o.index_name=pf4.index_name \r\n" + 
-			"left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n" + 
-			"where pf.xh=v.xh and pf.pf=5 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n" + 
-			"and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name \r\n" + 
-			"order by o.order_id";
-	
+	private String logoutsql2017 = "select o.order_id,o.index_name,\r\n"
+			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n"
+			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n"
+			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,\r\n"
+			+ "case when pf3.p3 is null then 0 else pf3.p3 end p3 ,\r\n"
+			+ "case when pf4.p4 is null then 0 else pf4.p4 end p4 ,\r\n"
+			+ "case when pf5.p5 is null then 0 else pf5.p5 end p5 \r\n" + "from index_order o\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=0 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf0 on o.index_name=pf0.index_name\r\n"
+			+ "left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=1 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf1 on o.index_name=pf1.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=2 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf2 on o.index_name=pf2.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=3 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf3 on o.index_name=pf3.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=4 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf4 on o.index_name=pf4.index_name \r\n"
+			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from vehicle_hbt_{DBDate} pf,veh_logout_hbt_{DBDate} v \r\n"
+			+ "where pf.xh=v.xh and pf.pf=5 and pf.rlzl<>'C' and pf.rlzl<>'N' and pf.rlzl<>'P' \r\n"
+			+ "and v.zxrq >= to_date('2017/01/01','yyyy/mm/dd') and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name \r\n"
+			+ "order by o.order_id";
+
 	private String inpfsql2017 = "select o.order_id,o.index_name,\r\n"
 			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n"
 			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,\r\n"
@@ -226,6 +224,34 @@ public class QueryThread implements Runnable {
 			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf group by index_name) pf5 on o.index_name=pf5.index_name "
 			+ "order by o.order_id";
 
+	private String zsjsql = "select o.order_id,o.index_name," + "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,"
+			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,"
+			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,"
+			+ "case when pf3.p3 is null then 0 else pf3.p3 end p3 ,"
+			+ "case when pf4.p4 is null then 0 else pf4.p4 end p4 ,"
+			+ "case when pf5.p5 is null then 0 else pf5.p5 end p5 " + "from index_order o "
+			+ "left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from pf0_{DBDate} pf where fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf0 on o.index_name=pf0.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from pf1_{DBDate} pf where fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf1 on o.index_name=pf1.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from pf2_{DBDate} pf where fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf2 on o.index_name=pf2.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from pf3_{DBDate} pf where fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf3 on o.index_name=pf3.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from pf4_{DBDate} pf where fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf4 on o.index_name=pf4.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf where fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf5 on o.index_name=pf5.index_name "
+			+ "order by o.order_id";
+
+	private String dxbsql = "select o.order_id,o.index_name," + "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,"
+			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,"
+			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,"
+			+ "case when pf3.p3 is null then 0 else pf3.p3 end p3 ,"
+			+ "case when pf4.p4 is null then 0 else pf4.p4 end p4 ,"
+			+ "case when pf5.p5 is null then 0 else pf5.p5 end p5 " + "from index_order o "
+			+ "left join (select count(pf.INDEX_NAME) p0,pf.INDEX_NAME from pf0_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf0 on o.index_name=pf0.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p1,pf.INDEX_NAME from pf1_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf1 on o.index_name=pf1.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p2,pf.INDEX_NAME from pf2_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf2 on o.index_name=pf2.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p3,pf.INDEX_NAME from pf3_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf3 on o.index_name=pf3.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from pf4_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf4 on o.index_name=pf4.index_name "
+			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf5 on o.index_name=pf5.index_name "
+			+ "order by o.order_id";
+
 	/**
 	 * 后台查询线程
 	 * 
@@ -251,8 +277,9 @@ public class QueryThread implements Runnable {
 			this.filename = filename;
 	}
 
-	protected void queryPaiFang() {
+	protected String queryPaiFang() {
 		List<PaiFang> pfList = new ArrayList<PaiFang>();
+		String msg = "操作失败";
 
 		Connection con = null;// 创建一个数据库连接
 		PreparedStatement pre = null;// 创建预编译语句对象，一般都是用这个而不用Statement
@@ -260,11 +287,29 @@ public class QueryThread implements Runnable {
 		try {
 			con = getConn();
 			System.out.println("连接成功！");
-			if (citycode[0].equals("Summary")) {
+			String fstr = citycode[0];
+			String ed;
+			if (fstr.equals("Summary") || fstr.equals("ZSJ") || fstr.equals("DXB")) {
 				words.put("DBDate", dbDate);
-				// String sql = String.format(summarysql, dbDate, dbDate, dbDate, dbDate,
-				// dbDate,dbDate);
-				String sql = PositionFormat.format(summarysql, words);
+
+				String sql;
+				switch (fstr) {
+				case "Summary":
+					sql = PositionFormat.format(summarysql, words);
+					ed = "全省汇总";
+					break;
+				case "ZSJ":
+					sql = PositionFormat.format(zsjsql, words);
+					ed = "珠三角汇总";
+					break;
+				case "DXB":
+					sql = PositionFormat.format(dxbsql, words);
+					ed = "粤东西北汇总";
+					break;
+				default:
+					return msg;
+				}
+
 				pre = con.prepareStatement(sql);// 实例化预编译语句
 				pre.setQueryTimeout(0);
 
@@ -277,39 +322,38 @@ public class QueryThread implements Runnable {
 				ExportExcel<PaiFang> expPaiFang = new ExportExcel<PaiFang>();
 				String[] titleCityCode = new String[] { "发证机关", "p0", "p1", "p2", "p3", "p4", "p5" };
 				OutputStream out = new FileOutputStream(
-						System.getProperty("user.dir") + File.separator + filename + "_Summary.xls");
+						System.getProperty("user.dir") + File.separator + filename + "_" + ed + ".xls");
 				expPaiFang.exportExcel(titleCityCode, pfList, out);
 				out.close();
-				System.out.println(dbDate + "_Summary is finished");
+				System.out.println(dbDate + "_" + ed + " is finished");
+				msg = "操作完成";
 
 			} else {
 				for (String city : citycode) {
 					words.put("DBDate", dbDate);
 					words.put("City", city);
-					// String sql = String.format(citysql, dbDate, city, dbDate, city, dbDate, city,
-					// dbDate, city, dbDate, city, dbDate, city);
-					String sql="";
+					String sql = "";
 					switch (type) {
 					case PF:
 						sql = citysql;
 						break;
 					case IN:
-						sql=inpfsql2017;
+						sql = inpfsql2017;
 						break;
 					case OUT:
-						sql=outpfsql2017;
+						sql = outpfsql2017;
 						break;
 					case LOGOUT:
-						sql=logoutsql2017;
+						sql = logoutsql2017;
 						break;
 					case IN2016:
-						sql=inpfsql2016;
+						sql = inpfsql2016;
 						break;
 					case OUT2016:
-						sql=outpfsql2016;
+						sql = outpfsql2016;
 						break;
 					case LOGOUT2016:
-						sql=logoutsql2016;
+						sql = logoutsql2016;
 						break;
 					default:
 						break;
@@ -332,11 +376,12 @@ public class QueryThread implements Runnable {
 					out.close();
 					pfList.clear();
 					System.out.println(filename + "_" + CityCode.getCity(city) + " is finished");
+					msg = "操作完成";
 				}
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			msg += ":" + ex.toString();
 		} finally {
 			try {
 				// 逐一将上面的几个对象关闭，因为不关闭的话会影响性能、并且占用资源
@@ -349,19 +394,21 @@ public class QueryThread implements Runnable {
 					con.close();
 				System.out.println("数据库连接已关闭！");
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				msg += ":" + ex.toString();
 			}
 		}
+		return msg;
 	}
 
-	protected void queryTaoTai() {
+	protected String queryTaoTai() {
+		String msg = "操作失败";
 		List<TaoTai> ttList = new ArrayList<TaoTai>();
 		Connection con = null;// 创建一个数据库连接
 		PreparedStatement pre = null;// 创建预编译语句对象，一般都是用这个而不用Statement
 		ResultSet result = null;// 创建一个结果集对象
 		try {
 			con = getConn();
-			System.out.println("连接成功！");
+			// System.out.println("连接成功！");
 			String sql;
 			for (String city : citycode) {
 				words.put("DBDate", dbDate);
@@ -391,9 +438,10 @@ public class QueryThread implements Runnable {
 				out.close();
 				ttList.clear();
 				System.out.println(filename + "_" + CityCode.getCity(city) + " is finished");
+				msg = "操作完成";
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			msg += ":" + ex.toString();
 		} finally {
 			try {
 				// 逐一将上面的几个对象关闭，因为不关闭的话会影响性能、并且占用资源
@@ -406,12 +454,14 @@ public class QueryThread implements Runnable {
 					con.close();
 				System.out.println("数据库连接已关闭！");
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				msg += ":" + ex.toString();
 			}
 		}
+		return msg;
 	}
 
-	protected void queryShengYu() {
+	protected String queryShengYu() {
+		String msg = "操作失败";
 		List<ShengYu> syList = new ArrayList<ShengYu>();
 		Connection con = null;// 创建一个数据库连接
 		PreparedStatement pre = null;// 创建预编译语句对象，一般都是用这个而不用Statement
@@ -430,13 +480,13 @@ public class QueryThread implements Runnable {
 				result = pre.executeQuery();
 				while (result.next()) {
 					syList.add(new ShengYu(result.getString("fzjg"), result.getString("xzqh"), result.getString("hphm"),
-							result.getString("hpzl"),result.getString("clxh"), result.getString("syxz"), 
-							result.getString("cllx"),result.getString("clsbdh"), result.getDate("ccdjrq"), 
-							result.getString("rlzl"),result.getDate("qzbfqz"), result.getString("zt")));
+							result.getString("hpzl"), result.getString("clxh"), result.getString("syxz"),
+							result.getString("cllx"), result.getString("clsbdh"), result.getDate("ccdjrq"),
+							result.getString("rlzl"), result.getDate("qzbfqz"), result.getString("zt")));
 				}
 
 				ExportExcel<ShengYu> expShengYu = new ExportExcel<ShengYu>();
-				String[] titleCityCode = new String[] { "发证机关", "行政区划", "号牌号码", "号牌种类","车辆型号", "使用性质", "车辆类型",
+				String[] titleCityCode = new String[] { "发证机关", "行政区划", "号牌号码", "号牌种类", "车辆型号", "使用性质", "车辆类型",
 						"车辆识别代码（VIN号后6位）", "初次登记日期", "燃料种类", "强制报废期止", "状态" };
 				OutputStream out = new FileOutputStream(System.getProperty("user.dir") + File.separator + filename + "_"
 						+ CityCode.getCity(city) + ".xls");
@@ -444,9 +494,10 @@ public class QueryThread implements Runnable {
 				out.close();
 				syList.clear();
 				System.out.println(filename + "_" + CityCode.getCity(city) + " is finished");
+				msg = "操作完成";
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			msg += ex.toString();
 		} finally {
 			try {
 				// 逐一将上面的几个对象关闭，因为不关闭的话会影响性能、并且占用资源
@@ -457,12 +508,12 @@ public class QueryThread implements Runnable {
 					pre.close();
 				if (con != null)
 					con.close();
-				System.out.println("数据库连接已关闭！");
+				// System.out.println("数据库连接已关闭！");
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				msg += ex.toString();
 			}
 		}
-
+		return msg;
 	}
 
 	private Connection getConn() throws ClassNotFoundException, SQLException {
@@ -478,6 +529,8 @@ public class QueryThread implements Runnable {
 
 	@Override
 	public void run() {
+		// 由于线程操作，最好使用状态栏显示返回的字符
+		String r = "Doing";
 		switch (type) {
 		case PF:
 		case IN:
@@ -486,21 +539,21 @@ public class QueryThread implements Runnable {
 		case IN2016:
 		case OUT2016:
 		case LOGOUT2016:
-			queryPaiFang();
+			r = queryPaiFang();
 			break;
 		case TT:
-			queryTaoTai();
+			r = queryTaoTai();
 			break;
 		case M:
-			queryTaoTai();
+			r = queryTaoTai();
 			break;
 		case SY:
-			queryShengYu();
+			r = queryShengYu();
 			break;
-		
 		default:
 			break;
 		}
+		System.out.println(r);
 	}
 
 }

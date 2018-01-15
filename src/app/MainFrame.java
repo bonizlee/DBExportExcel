@@ -27,6 +27,8 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	JList<String> jCity;
 	JCheckBox chkSummary;
+	JCheckBox chkZSJ;
+	JCheckBox chkDXB;
 	JButton btnQueryPF;
 	JButton btnQueryTT;
 	JButton btnQueryM;
@@ -66,8 +68,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		jCity.setFixedCellWidth(100);
 		pPf.add(new JLabel("请选择一个或多个地市"));
 		pPf.add(jCity);
-		chkSummary = new JCheckBox("查询全省汇总数据");
+		chkSummary = new JCheckBox("全省汇总");
+		chkZSJ = new JCheckBox("珠三角汇总");
+		chkDXB = new JCheckBox("粤东西北汇总");
+
 		pPf.add(chkSummary);
+		pPf.add(chkZSJ);
+		pPf.add(chkDXB);
 		jsp.setLeftComponent(pPf);
 		// ---Cities---
 
@@ -84,35 +91,35 @@ public class MainFrame extends JFrame implements ActionListener {
 		btnQueryPF.setActionCommand(QueryType.PF.toString());
 		btnQueryPF.addActionListener(this);
 		pbutton.add(btnQueryPF);
-		
+
 		JPanel pInout = new JPanel();
-		btnQueryIN=new JButton("迁入类排放数据");
+		btnQueryIN = new JButton("迁入类排放数据");
 		btnQueryIN.setActionCommand(QueryType.IN.toString());
 		btnQueryIN.addActionListener(this);
 		pInout.add(btnQueryIN);
-		
-		btnQueryOUT=new JButton("迁出类排放数据");
+
+		btnQueryOUT = new JButton("迁出类排放数据");
 		btnQueryOUT.setActionCommand(QueryType.OUT.toString());
 		btnQueryOUT.addActionListener(this);
 		pInout.add(btnQueryOUT);
-		
-		btnQueryLOGOUT=new JButton("注销类排放数据");
+
+		btnQueryLOGOUT = new JButton("注销类排放数据");
 		btnQueryLOGOUT.setActionCommand(QueryType.LOGOUT.toString());
 		btnQueryLOGOUT.addActionListener(this);
 		pInout.add(btnQueryLOGOUT);
-		
+
 		JPanel pInout2016 = new JPanel();
-		btnQueryIN2016=new JButton("迁入类排放数据2016");
+		btnQueryIN2016 = new JButton("迁入类排放数据2016");
 		btnQueryIN2016.setActionCommand(QueryType.IN2016.toString());
 		btnQueryIN2016.addActionListener(this);
 		pInout2016.add(btnQueryIN2016);
-		
-		btnQueryOUT2016=new JButton("迁出类排放数据2016");
+
+		btnQueryOUT2016 = new JButton("迁出类排放数据2016");
 		btnQueryOUT2016.setActionCommand(QueryType.OUT2016.toString());
 		btnQueryOUT2016.addActionListener(this);
 		pInout2016.add(btnQueryOUT2016);
-		
-		btnQueryLOGOUT2016=new JButton("注销类排放数据2016");
+
+		btnQueryLOGOUT2016 = new JButton("注销类排放数据2016");
 		btnQueryLOGOUT2016.setActionCommand(QueryType.LOGOUT2016.toString());
 		btnQueryLOGOUT2016.addActionListener(this);
 		pInout2016.add(btnQueryLOGOUT2016);
@@ -186,6 +193,10 @@ public class MainFrame extends JFrame implements ActionListener {
 		int[] selindex = jCity.getSelectedIndices();
 		if (chkSummary.isSelected()) {
 			selcity = new String[] { "Summary" };
+		} else if (chkZSJ.isSelected()) {
+			selcity = new String[] { "ZSJ" };
+		} else if (chkDXB.isSelected()) {
+			selcity = new String[] { "DXB" };
 		} else {
 			selcity = new String[selindex.length];
 			for (int i = 0; i < selindex.length; i++) {
@@ -200,7 +211,8 @@ public class MainFrame extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(this, "请填入数据库日期", "错误", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		if (jCity.getSelectedIndices().length == 0 && !chkSummary.isSelected()) {
+		if (jCity.getSelectedIndices().length == 0 && !chkSummary.isSelected() && !chkZSJ.isSelected()
+				&& !chkDXB.isSelected()) {
 			JOptionPane.showMessageDialog(this, "请选择地市或勾选汇总", "错误", JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -212,61 +224,71 @@ public class MainFrame extends JFrame implements ActionListener {
 		String filename = "";
 		QueryType querytype = QueryType.getType(e.getActionCommand());
 		String dbname = "";
-		
+
 		String[] selcity = getSelectCities();
 		switch (querytype) {
 		case PF:
-			if(!check(textPfDb)) return;
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("截止至%s排放分类统计", dbname);
+			filename = String.format("截止至%s排放分类统计", dbname);
 			break;
 		case TT:
-			if (!check(textHbDb)) return;
+			if (!check(textHbDb))
+				return;
 			dbname = textHbDb.getText();
 			filename = String.format("截止至%s_%s", dbname, textTTFile.getText());
 			break;
 		case SY:
-			if (!check(textHbDb)) return;
+			if (!check(textHbDb))
+				return;
 			dbname = textHbDb.getText();
 			filename = String.format("截止至%s_%s", dbname, textSyFile.getText());
 			break;
 		case M:
-			if (!check(textHbDb)) return;
+			if (!check(textHbDb))
+				return;
 			dbname = textHbDb.getText();
 			filename = String.format("截止至%s_%s", dbname, textMFile.getText());
-			break;			
+			break;
 		case IN:
-			if(!check(textPfDb)) return;
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("截止至%s迁入按排放分类统计", dbname);
+			filename = String.format("截止至%s迁入按排放分类统计", dbname);
 			break;
 		case OUT:
-			if(!check(textPfDb)) return;
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("截止至%s迁出按排放分类统计", dbname);
+			filename = String.format("截止至%s迁出按排放分类统计", dbname);
 			break;
-		case LOGOUT:			
-			if(!check(textPfDb)) return;
+		case LOGOUT:
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("截止至%s注销按排放分类统计", dbname);
+			filename = String.format("截止至%s注销按排放分类统计", dbname);
 			break;
 		case IN2016:
-			if(!check(textPfDb)) return;
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("2016迁入按排放分类统计", dbname);
+			filename = String.format("2016迁入按排放分类统计", dbname);
 			break;
 		case OUT2016:
-			if(!check(textPfDb)) return;
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("2016迁出按排放分类统计", dbname);
+			filename = String.format("2016迁出按排放分类统计", dbname);
 			break;
-		case LOGOUT2016:			
-			if(!check(textPfDb)) return;
+		case LOGOUT2016:
+			if (!check(textPfDb))
+				return;
 			dbname = textPfDb.getText();
-			filename=String.format("2016注销按排放分类统计", dbname);
+			filename = String.format("2016注销按排放分类统计", dbname);
 			break;
 		default:
-			return;			
+			return;
 		}
 		Thread t = new Thread(new QueryThread(querytype, dbname, selcity, filename));
 		t.start();
