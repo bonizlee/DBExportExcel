@@ -1,7 +1,6 @@
 package app;
 
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -91,7 +90,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		btnQueryPF.setActionCommand(QueryType.PF.toString());
 		btnQueryPF.addActionListener(this);
 		pbutton.add(btnQueryPF);
-
+		/*
 		JPanel pInout = new JPanel();
 		btnQueryIN = new JButton("迁入类排放数据");
 		btnQueryIN.setActionCommand(QueryType.IN.toString());
@@ -123,12 +122,13 @@ public class MainFrame extends JFrame implements ActionListener {
 		btnQueryLOGOUT2016.setActionCommand(QueryType.LOGOUT2016.toString());
 		btnQueryLOGOUT2016.addActionListener(this);
 		pInout2016.add(btnQueryLOGOUT2016);
-
+		*/
 		pfPanel.add(plabel);
 		pfPanel.add(pDB);
 		pfPanel.add(pbutton);
-		pfPanel.add(pInout);
-		pfPanel.add(pInout2016);
+		
+		//pfPanel.add(pInout);
+		//pfPanel.add(pInout2016);
 		// ---排放统计结束---
 
 		// ---黄标车统计开始--

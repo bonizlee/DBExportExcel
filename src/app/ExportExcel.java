@@ -11,26 +11,24 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.poi.hssf.usermodel.HSSFCell;  
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;  
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;  
-import org.apache.poi.hssf.usermodel.HSSFComment;  
-import org.apache.poi.hssf.usermodel.HSSFFont;  
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;  
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;  
-import org.apache.poi.hssf.usermodel.HSSFRow;  
-import org.apache.poi.hssf.usermodel.HSSFSheet;  
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;  
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFDrawing;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.sun.prism.paint.Color;  
+//import com.sun.prism.paint.Color;  
 
 /**
  * 
@@ -76,14 +74,17 @@ public class ExportExcel<T> {
 	            Collection<T> dataset, OutputStream out, String pattern)  
 	    {  
 	        // 声明一个工作薄  
-	        HSSFWorkbook workbook = new HSSFWorkbook();  
+	        //HSSFWorkbook workbook = new HSSFWorkbook();
+	    	int rowMaxCache = 100;	    	 
+	    	XSSFWorkbook xssfWb = new XSSFWorkbook();
+	    	SXSSFWorkbook workbook = new SXSSFWorkbook(xssfWb, rowMaxCache);
 	        // 生成一个表格  
-	        HSSFSheet sheet = workbook.createSheet(title);  
+	    	SXSSFSheet sheet = workbook.createSheet(title);  
 	        // 设置表格默认列宽度为15个字节  
 	        //sheet.setDefaultColumnWidth((short) 15);
 	        
 	        // 生成一个样式  
-	        HSSFCellStyle style = workbook.createCellStyle();  
+	        CellStyle style = workbook.createCellStyle();  
 	        // 设置这些样式  	       
 	       
 	        //style.setFillForegroundColor(HSSFColor.WHITE.index);
@@ -96,7 +97,7 @@ public class ExportExcel<T> {
 	        style.setAlignment(HorizontalAlignment.CENTER);
 	        
 	        // 生成一个字体  
-	        HSSFFont font = workbook.createFont();  
+	        Font font = workbook.createFont();  
 	        font.setColor(Font.COLOR_NORMAL);  
 	        font.setFontHeightInPoints((short) 12);
 	        font.setBold(true);
@@ -104,7 +105,7 @@ public class ExportExcel<T> {
 	        // 把字体应用到当前的样式  
 	        style.setFont(font);  
 	        // 生成并设置另一个样式  
-	        HSSFCellStyle style2 = workbook.createCellStyle();  	        
+	        CellStyle style2 = workbook.createCellStyle();  	        
 	        style2.setFillForegroundColor(HSSFColorPredefined.WHITE.getIndex());
 	        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
 	        style2.setBorderBottom(BorderStyle.THIN);  
@@ -115,17 +116,17 @@ public class ExportExcel<T> {
 	        style2.setVerticalAlignment(VerticalAlignment.CENTER);
 	        //style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);  
 	        // 生成另一个字体  
-	        HSSFFont font2 = workbook.createFont();  
+	        Font font2 = workbook.createFont();  
 	        //font2.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);  
 	        
 	        // 把字体应用到当前的样式  
 	        style2.setFont(font2);  
 	        
-	        HSSFFont font3 = workbook.createFont();  
+	        Font font3 = workbook.createFont();  
             font3.setColor(Font.COLOR_NORMAL);  
 	  
 	        // 声明一个画图的顶级管理器  
-	        HSSFPatriarch patriarch = sheet.createDrawingPatriarch();  
+	        SXSSFDrawing patriarch = sheet.createDrawingPatriarch();  
 	        // 定义注释的大小和位置,详见文档  
 	        //HSSFComment comment = patriarch.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short) 4, 2, (short) 6, 5));  
 	        // 设置注释内容  
@@ -134,16 +135,16 @@ public class ExportExcel<T> {
 	        //comment.setAuthor("Boniz");  
 	  
 	        // 产生表格标题行  
-	        HSSFRow row = sheet.createRow(0);
+	        SXSSFRow row = sheet.createRow(0);
 	        int[] fieldwidth=new int[headers.length];
 	        for (short i = 0; i < headers.length; i++)  
 	        {  
 	        	fieldwidth[i]=headers[i].getBytes().length*2*256;
 	        	sheet.setColumnWidth(i, fieldwidth[i]);//根据标题内容设置列宽度
 	        	
-	            HSSFCell cell = row.createCell(i);  
+	            SXSSFCell cell = row.createCell(i);  
 	            cell.setCellStyle(style);  
-	            HSSFRichTextString text = new HSSFRichTextString(headers[i]);  
+	            XSSFRichTextString text = new XSSFRichTextString(headers[i]);  
 	            cell.setCellValue(text);  
 	        }  
 	  
@@ -159,7 +160,7 @@ public class ExportExcel<T> {
 	            Field[] fields = t.getClass().getDeclaredFields();  
 	            for (short i = 0; i < fields.length; i++)  
 	            {  
-	                HSSFCell cell = row.createCell(i);  
+	                SXSSFCell cell = row.createCell(i);  
 	                cell.setCellStyle(style2);  
 	                Field field = fields[i];  
 	                String fieldName = field.getName();  
@@ -169,9 +170,7 @@ public class ExportExcel<T> {
 	                try  
 	                {  
 	                    Class tCls = t.getClass();  
-	                    Method getMethod = tCls.getMethod(getMethodName,  
-	                            new Class[]  
-	                            {});  
+	                    Method getMethod = tCls.getMethod(getMethodName,new Class[]{});  
 	                    Object value = getMethod.invoke(t, new Object[]  
 	                    {}); 
 	                    if(value==null)
@@ -192,12 +191,12 @@ public class ExportExcel<T> {
 	                        sheet.setColumnWidth(i, (short) (35.7 * 80));  
 	                        // sheet.autoSizeColumn(i);  
 	                        byte[] bsValue = (byte[]) value;  
-	                        HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0,  
+	                        XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0,  
 	                                1023, 255, (short) 6, index, (short) 6, index);  
 	                        
 	                        anchor.setAnchorType(AnchorType.MOVE_DONT_RESIZE);
 	                        patriarch.createPicture(anchor, workbook.addPicture(  
-	                                bsValue, HSSFWorkbook.PICTURE_TYPE_JPEG));  
+	                                bsValue, XSSFWorkbook.PICTURE_TYPE_JPEG));  
 	                    }  
 	                    else  
 	                    {  
@@ -227,7 +226,7 @@ public class ExportExcel<T> {
 	                        }	                        	
 	                        else  
 	                        {  
-	                            HSSFRichTextString richString = new HSSFRichTextString(  
+	                            XSSFRichTextString richString = new XSSFRichTextString(  
 	                                    textValue);  
 	                            
 	                            richString.applyFont(font3);  

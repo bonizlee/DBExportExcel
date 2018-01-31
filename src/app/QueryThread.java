@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javafx.geometry.Pos;
-
 /**
  * 后台查询操作线程
  * 
@@ -38,7 +36,7 @@ public class QueryThread implements Runnable {
 	private String msql = "select fzjg,xzqh,hphm,hpzl,clxh,cllx,rlzl,hdzk,zzl,syxz,ccdjrq,zt "
 			+ "from M_{DBDate} where fzjg='{City}'";
 
-	private String dateTemplate = "to_date('{year}/{month}/{day}','yyyy/mm/dd')";
+	//private String dateTemplate = "to_date('{year}/{month}/{day}','yyyy/mm/dd')";
 
 	private String logoutsql2016 = "select o.order_id,o.index_name,\r\n"
 			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,\r\n"
@@ -227,12 +225,12 @@ public class QueryThread implements Runnable {
 			+ "order by o.order_id";
 	*/
 	private String citysql = "select o.order_id,o.index_name,p0,p1,p2,p3,p4,p5 from index_order o " + 
-			"left join (select index_name,count(*) p0 from {DBDate} t where pf=0 and t.FZJG='{City}' group by index_name) p0 on o.index_name=p0.index_name " + 
-			"left join (select index_name,count(*) p1 from {DBDate} t where pf=1 and t.FZJG='{City}' group by index_name) p1 on o.index_name=p1.index_name " + 
-			"left join (select index_name,count(*) p2 from {DBDate} t where pf=2 and t.FZJG='{City}' group by index_name) p2 on o.index_name=p2.index_name " + 
-			"left join (select index_name,count(*) p3 from {DBDate} t where pf=3 and t.FZJG='{City}' group by index_name) p3 on o.index_name=p3.index_name " + 
-			"left join (select index_name,count(*) p4 from {DBDate} t where pf=4 and t.FZJG='{City}' group by index_name) p4 on o.index_name=p4.index_name " + 
-			"left join (select index_name,count(*) p5 from {DBDate} t where pf=5 and t.FZJG='{City}' group by index_name) p5 on o.index_name=p5.index_name " + 
+			"left join (select index_name,count(*) p0 from {DBDate} t where pf=0 and FZJG='{City}' group by index_name) p0 on o.index_name=p0.index_name " + 
+			"left join (select index_name,count(*) p1 from {DBDate} t where pf=1 and FZJG='{City}' group by index_name) p1 on o.index_name=p1.index_name " + 
+			"left join (select index_name,count(*) p2 from {DBDate} t where pf=2 and FZJG='{City}' group by index_name) p2 on o.index_name=p2.index_name " + 
+			"left join (select index_name,count(*) p3 from {DBDate} t where pf=3 and FZJG='{City}' group by index_name) p3 on o.index_name=p3.index_name " + 
+			"left join (select index_name,count(*) p4 from {DBDate} t where pf=4 and FZJG='{City}' group by index_name) p4 on o.index_name=p4.index_name " + 
+			"left join (select index_name,count(*) p5 from {DBDate} t where pf=5 and FZJG='{City}' group by index_name) p5 on o.index_name=p5.index_name " + 
 			"order by o.order_id";
 	
 	private String summarysql = "select o.order_id,o.index_name,p0,p1,p2,p3,p4,p5 from index_order o " + 
@@ -362,7 +360,7 @@ public class QueryThread implements Runnable {
 				ExportExcel<PaiFang> expPaiFang = new ExportExcel<PaiFang>();
 				String[] titleCityCode = new String[] { "分类名称", "p0", "p1", "p2", "p3", "p4", "p5" };
 				OutputStream out = new FileOutputStream(
-						System.getProperty("user.dir") + File.separator + filename + "_" + ed + ".xls");
+						System.getProperty("user.dir") + File.separator + filename + "_" + ed + ".xlsx");
 				expPaiFang.exportExcel(titleCityCode, pfList, out);
 				out.close();
 				System.out.println(dbDate + "_" + ed + " is finished");
@@ -411,7 +409,7 @@ public class QueryThread implements Runnable {
 					ExportExcel<PaiFang> expPaiFang = new ExportExcel<PaiFang>();
 					String[] titleCityCode = new String[] { "分类名称", "p0", "p1", "p2", "p3", "p4", "p5" };
 					OutputStream out = new FileOutputStream(System.getProperty("user.dir") + File.separator + filename
-							+ "_" + CityCode.getCity(city) + ".xls");
+							+ "_" + CityCode.getCity(city) + ".xlsx");
 					expPaiFang.exportExcel(titleCityCode, pfList, out);
 					out.close();
 					pfList.clear();
@@ -473,7 +471,7 @@ public class QueryThread implements Runnable {
 				String[] titleCityCode = new String[] { "发证机关", "行政区划", "号牌号码", "号牌种类", "车辆型号", "车辆类型", "燃料种类", "核定载客",
 						"总质量", "使用性质", "初次登记日期", "状态" };
 				OutputStream out = new FileOutputStream(System.getProperty("user.dir") + File.separator + filename + "_"
-						+ CityCode.getCity(city) + ".xls");
+						+ CityCode.getCity(city) + ".xlsx");
 				expTaoTai.exportExcel(titleCityCode, ttList, out);
 				out.close();
 				ttList.clear();
@@ -529,7 +527,7 @@ public class QueryThread implements Runnable {
 				String[] titleCityCode = new String[] { "发证机关", "行政区划", "号牌号码", "号牌种类", "车辆型号", "使用性质", "车辆类型",
 						"车辆识别代码（VIN号后6位）", "初次登记日期", "燃料种类", "强制报废期止", "状态" };
 				OutputStream out = new FileOutputStream(System.getProperty("user.dir") + File.separator + filename + "_"
-						+ CityCode.getCity(city) + ".xls");
+						+ CityCode.getCity(city) + ".xlsx");
 				expShengYu.exportExcel(titleCityCode, syList, out);
 				out.close();
 				syList.clear();
