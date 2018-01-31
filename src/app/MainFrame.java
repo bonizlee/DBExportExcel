@@ -231,13 +231,13 @@ public class MainFrame extends JFrame implements ActionListener {
 			if (!check(textPfDb))
 				return;
 			dbname = textPfDb.getText();
-			filename = String.format("截止至%s排放分类统计", dbname);
+			filename = String.format("%s排放分类统计", dbname);
 			break;
 		case TT:
 			if (!check(textHbDb))
 				return;
 			dbname = textHbDb.getText();
-			filename = String.format("截止至%s_%s", dbname, textTTFile.getText());
+			filename = String.format("%s_%s", dbname, textTTFile.getText());
 			break;
 		case SY:
 			if (!check(textHbDb))

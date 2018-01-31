@@ -134,10 +134,12 @@ public class ExportExcel<T> {
 	        //comment.setAuthor("Boniz");  
 	  
 	        // 产生表格标题行  
-	        HSSFRow row = sheet.createRow(0);  
+	        HSSFRow row = sheet.createRow(0);
+	        int[] fieldwidth=new int[headers.length];
 	        for (short i = 0; i < headers.length; i++)  
 	        {  
-	        	sheet.setColumnWidth(i, headers[i].getBytes().length*2*256);//根据标题内容设置列宽度
+	        	fieldwidth[i]=headers[i].getBytes().length*2*256;
+	        	sheet.setColumnWidth(i, fieldwidth[i]);//根据标题内容设置列宽度
 	        	
 	            HSSFCell cell = row.createCell(i);  
 	            cell.setCellStyle(style);  
@@ -205,9 +207,14 @@ public class ExportExcel<T> {
 	                    // 如果不是图片数据，就利用正则表达式判断textValue是否全部由数字组成  
 	                    if (textValue != null)  
 	                    {  
-	                        Pattern pDouble = Pattern.compile("^//d+(//.//d+)?$");	                        
+	                    	int fwidth=textValue.getBytes().length*2*256;
+	                    	if(fwidth>fieldwidth[i]) {
+	                    		fieldwidth[i]=fwidth;
+	                    		sheet.setColumnWidth(i, fieldwidth[i]);//根据标题内容设置列宽度
+	                    	}
+	                        Pattern pDouble = Pattern.compile("^\\d+(\\.\\d+)?$");	                        
 	                        Matcher matcherDouble = pDouble.matcher(textValue);  
-	                        Pattern pInt = Pattern.compile("^//d+$");	                        
+	                        Pattern pInt = Pattern.compile("^\\d+$");	                        
 	                        Matcher matcherInt = pInt.matcher(textValue); 
 	                        
 	                        if (matcherDouble.matches())  

@@ -190,6 +190,7 @@ public class QueryThread implements Runnable {
 			+ "and pf.pf=5 and pf.FZJG='{City}' group by index_name) pf5 on o.index_name=pf5.index_name\r\n"
 			+ "order by o.order_id";
 
+	/*
 	private String citysql = "select o.order_id,o.index_name," + "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,"
 			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,"
 			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,"
@@ -209,6 +210,7 @@ public class QueryThread implements Runnable {
 			+ "(select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf where pf.FZJG='{City}' "
 			+ "group by index_name) pf5 on o.index_name=pf5.index_name " + "order by o.order_id";
 
+	
 	private String summarysql = "select o.order_id,o.index_name,"
 			+ "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,"
 			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,"
@@ -223,7 +225,44 @@ public class QueryThread implements Runnable {
 			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from pf4_{DBDate} pf group by index_name) pf4 on o.index_name=pf4.index_name "
 			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf group by index_name) pf5 on o.index_name=pf5.index_name "
 			+ "order by o.order_id";
-
+	*/
+	private String citysql = "select o.order_id,o.index_name,p0,p1,p2,p3,p4,p5 from index_order o " + 
+			"left join (select index_name,count(*) p0 from {DBDate} t where pf=0 and t.FZJG='{City}' group by index_name) p0 on o.index_name=p0.index_name " + 
+			"left join (select index_name,count(*) p1 from {DBDate} t where pf=1 and t.FZJG='{City}' group by index_name) p1 on o.index_name=p1.index_name " + 
+			"left join (select index_name,count(*) p2 from {DBDate} t where pf=2 and t.FZJG='{City}' group by index_name) p2 on o.index_name=p2.index_name " + 
+			"left join (select index_name,count(*) p3 from {DBDate} t where pf=3 and t.FZJG='{City}' group by index_name) p3 on o.index_name=p3.index_name " + 
+			"left join (select index_name,count(*) p4 from {DBDate} t where pf=4 and t.FZJG='{City}' group by index_name) p4 on o.index_name=p4.index_name " + 
+			"left join (select index_name,count(*) p5 from {DBDate} t where pf=5 and t.FZJG='{City}' group by index_name) p5 on o.index_name=p5.index_name " + 
+			"order by o.order_id";
+	
+	private String summarysql = "select o.order_id,o.index_name,p0,p1,p2,p3,p4,p5 from index_order o " + 
+			"left join (select index_name,count(*) p0 from {DBDate} t where pf=0  group by index_name) p0 on o.index_name=p0.index_name " + 
+			"left join (select index_name,count(*) p1 from {DBDate} t where pf=1  group by index_name) p1 on o.index_name=p1.index_name " + 
+			"left join (select index_name,count(*) p2 from {DBDate} t where pf=2  group by index_name) p2 on o.index_name=p2.index_name " + 
+			"left join (select index_name,count(*) p3 from {DBDate} t where pf=3  group by index_name) p3 on o.index_name=p3.index_name " + 
+			"left join (select index_name,count(*) p4 from {DBDate} t where pf=4  group by index_name) p4 on o.index_name=p4.index_name " + 
+			"left join (select index_name,count(*) p5 from {DBDate} t where pf=5  group by index_name) p5 on o.index_name=p5.index_name " + 
+			"order by o.order_id";
+	
+	private String zsjsql = "select o.order_id,o.index_name,p0,p1,p2,p3,p4,p5 from index_order o " + 
+			"left join (select index_name,count(*) p0 from {DBDate} t where pf=0 and fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) p0 on o.index_name=p0.index_name " + 
+			"left join (select index_name,count(*) p1 from {DBDate} t where pf=1 and fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) p1 on o.index_name=p1.index_name " + 
+			"left join (select index_name,count(*) p2 from {DBDate} t where pf=2 and fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) p2 on o.index_name=p2.index_name " + 
+			"left join (select index_name,count(*) p3 from {DBDate} t where pf=3 and fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) p3 on o.index_name=p3.index_name " + 
+			"left join (select index_name,count(*) p4 from {DBDate} t where pf=4 and fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) p4 on o.index_name=p4.index_name " + 
+			"left join (select index_name,count(*) p5 from {DBDate} t where pf=5 and fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) p5 on o.index_name=p5.index_name " + 
+			"order by o.order_id";
+	
+	private String dxbsql = "select o.order_id,o.index_name,p0,p1,p2,p3,p4,p5 from index_order o " + 
+			"left join (select index_name,count(*) p0 from {DBDate} t where pf=0 and fzjg not in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T','粤O') group by index_name) p0 on o.index_name=p0.index_name " + 
+			"left join (select index_name,count(*) p1 from {DBDate} t where pf=1 and fzjg not in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T','粤O') group by index_name) p1 on o.index_name=p1.index_name " + 
+			"left join (select index_name,count(*) p2 from {DBDate} t where pf=2 and fzjg not in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T','粤O') group by index_name) p2 on o.index_name=p2.index_name " + 
+			"left join (select index_name,count(*) p3 from {DBDate} t where pf=3 and fzjg not in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T','粤O') group by index_name) p3 on o.index_name=p3.index_name " + 
+			"left join (select index_name,count(*) p4 from {DBDate} t where pf=4 and fzjg not in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T','粤O') group by index_name) p4 on o.index_name=p4.index_name " + 
+			"left join (select index_name,count(*) p5 from {DBDate} t where pf=5 and fzjg not in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T','粤O') group by index_name) p5 on o.index_name=p5.index_name " + 
+			"order by o.order_id";
+	
+	/*
 	private String zsjsql = "select o.order_id,o.index_name," + "case when pf0.p0 is null then 0 else pf0.p0 end p0 ,"
 			+ "case when pf1.p1 is null then 0 else pf1.p1 end p1 ,"
 			+ "case when pf2.p2 is null then 0 else pf2.p2 end p2 ,"
@@ -251,6 +290,7 @@ public class QueryThread implements Runnable {
 			+ "left join (select count(pf.INDEX_NAME) p4,pf.INDEX_NAME from pf4_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf4 on o.index_name=pf4.index_name "
 			+ "left join (select count(pf.INDEX_NAME) p5,pf.INDEX_NAME from pf5_{DBDate} pf where not fzjg in ('粤A','粤B','粤C','粤E','粤H','粤J','粤L','粤S','粤T') group by index_name) pf5 on o.index_name=pf5.index_name "
 			+ "order by o.order_id";
+	*/
 
 	/**
 	 * 后台查询线程
@@ -320,7 +360,7 @@ public class QueryThread implements Runnable {
 				}
 
 				ExportExcel<PaiFang> expPaiFang = new ExportExcel<PaiFang>();
-				String[] titleCityCode = new String[] { "发证机关", "p0", "p1", "p2", "p3", "p4", "p5" };
+				String[] titleCityCode = new String[] { "分类名称", "p0", "p1", "p2", "p3", "p4", "p5" };
 				OutputStream out = new FileOutputStream(
 						System.getProperty("user.dir") + File.separator + filename + "_" + ed + ".xls");
 				expPaiFang.exportExcel(titleCityCode, pfList, out);
@@ -369,7 +409,7 @@ public class QueryThread implements Runnable {
 					}
 
 					ExportExcel<PaiFang> expPaiFang = new ExportExcel<PaiFang>();
-					String[] titleCityCode = new String[] { "发证机关", "p0", "p1", "p2", "p3", "p4", "p5" };
+					String[] titleCityCode = new String[] { "分类名称", "p0", "p1", "p2", "p3", "p4", "p5" };
 					OutputStream out = new FileOutputStream(System.getProperty("user.dir") + File.separator + filename
 							+ "_" + CityCode.getCity(city) + ".xls");
 					expPaiFang.exportExcel(titleCityCode, pfList, out);
