@@ -44,6 +44,7 @@ public class MainFrame extends JFrame implements ActionListener {
 	JTextField textMFile;
 	JTextField textTTFile;
 	JTextField textSyFile;
+	JTextField textFLFile;
 
 	public MainFrame() {
 		Container cp = getContentPane();
@@ -81,14 +82,18 @@ public class MainFrame extends JFrame implements ActionListener {
 		JPanel plabel = new JPanel();
 		plabel.add(new JLabel("统计排放数值"));
 		JPanel pDB = new JPanel();
-		pDB.add(new JLabel("请输入排放统计数据库日期"));
+		pDB.add(new JLabel("请输入分类统计数据库名"));
 		textPfDb = new JTextField(20);
+		
 		pDB.add(textPfDb);
 
 		JPanel pbutton = new JPanel();
-		btnQueryPF = new JButton("导出保有量排放数据");
+		pbutton.add(new JLabel("文件名："));
+		textFLFile = new JTextField("车辆类型分类统计");
+		btnQueryPF = new JButton("导出车辆分类统计数据");
 		btnQueryPF.setActionCommand(QueryType.PF.toString());
 		btnQueryPF.addActionListener(this);
+		pbutton.add(textFLFile);
 		pbutton.add(btnQueryPF);
 		/*
 		JPanel pInout = new JPanel();
@@ -231,7 +236,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			if (!check(textPfDb))
 				return;
 			dbname = textPfDb.getText();
-			filename = String.format("%s排放分类统计", dbname);
+			filename =textFLFile.getText(); //String.format("%s排放分类统计", dbname);
 			break;
 		case TT:
 			if (!check(textHbDb))
