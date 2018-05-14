@@ -20,6 +20,7 @@ import java.util.Map;
  *
  */
 public class QueryThread implements Runnable {
+	private DBMessageListener listener;
 	private String dbDate;
 	private String[] citycode;
 	private QueryType type;
@@ -302,17 +303,24 @@ public class QueryThread implements Runnable {
 	 * @param filename
 	 *            保存文件名
 	 */
-	public QueryThread(QueryType type, String dbDate, String[] citycode, String filename) {
+	public QueryThread(QueryType type, String dbDate, String[] citycode, String filename,DBMessageListener listener) {
 		super();
 		this.type = type;
 		this.dbDate = dbDate;
 		this.citycode = citycode;
+		this.listener=listener;
 		this.words = new HashMap<String, Object>();
 
 		if (filename == null || filename.isEmpty())
 			this.filename = dbDate;
 		else
 			this.filename = filename;
+	}
+	
+	protected void sendMessage(String msg) {
+		if(this.listener!=null) {
+			listener.doMessage(new DBMessageEvent(this, msg));
+		}
 	}
 
 	protected String queryPaiFang() {
@@ -363,8 +371,9 @@ public class QueryThread implements Runnable {
 						System.getProperty("user.dir") + File.separator + filename + "_" + ed + ".xlsx");
 				expPaiFang.exportExcel(titleCityCode, pfList, out);
 				out.close();
-				System.out.println(dbDate + "_" + ed + " is finished");
-				msg = "操作完成";
+				msg=dbDate + "_" + ed + "完成";
+				sendMessage(msg);
+				//msg = "操作完成";
 
 			} else {
 				for (String city : citycode) {
@@ -413,13 +422,15 @@ public class QueryThread implements Runnable {
 					expPaiFang.exportExcel(titleCityCode, pfList, out);
 					out.close();
 					pfList.clear();
-					System.out.println(filename + "_" + CityCode.getCity(city) + " is finished");
-					msg = "操作完成";
+					msg=filename + "_" + CityCode.getCity(city) + "完成";
+					sendMessage(msg);
+					//msg = "操作完成";
 				}
 			}
 
 		} catch (Exception ex) {
 			msg += ":" + ex.toString();
+			sendMessage(msg);
 		} finally {
 			try {
 				// 逐一将上面的几个对象关闭，因为不关闭的话会影响性能、并且占用资源
@@ -433,6 +444,7 @@ public class QueryThread implements Runnable {
 				System.out.println("数据库连接已关闭！");
 			} catch (Exception ex) {
 				msg += ":" + ex.toString();
+				sendMessage(msg);
 			}
 		}
 		return msg;
@@ -447,6 +459,7 @@ public class QueryThread implements Runnable {
 		try {
 			con = getConn();
 			// System.out.println("连接成功！");
+			sendMessage("连接成功！");
 			String sql;
 			for (String city : citycode) {
 				words.put("DBDate", dbDate);
@@ -475,8 +488,9 @@ public class QueryThread implements Runnable {
 				expTaoTai.exportExcel(titleCityCode, ttList, out);
 				out.close();
 				ttList.clear();
-				System.out.println(filename + "_" + CityCode.getCity(city) + " is finished");
-				msg = "操作完成";
+				msg=filename + "_" + CityCode.getCity(city) + "完成";
+				sendMessage(msg);
+				//msg = "操作完成";
 			}
 		} catch (Exception ex) {
 			msg += ":" + ex.toString();
@@ -493,6 +507,7 @@ public class QueryThread implements Runnable {
 				System.out.println("数据库连接已关闭！");
 			} catch (Exception ex) {
 				msg += ":" + ex.toString();
+				sendMessage(msg);
 			}
 		}
 		return msg;
@@ -531,11 +546,13 @@ public class QueryThread implements Runnable {
 				expShengYu.exportExcel(titleCityCode, syList, out);
 				out.close();
 				syList.clear();
-				System.out.println(filename + "_" + CityCode.getCity(city) + " is finished");
-				msg = "操作完成";
+				msg=filename + "_" + CityCode.getCity(city) + "完成";
+				sendMessage(msg);
+				//msg = "操作完成";
 			}
 		} catch (Exception ex) {
 			msg += ex.toString();
+			sendMessage(msg);
 		} finally {
 			try {
 				// 逐一将上面的几个对象关闭，因为不关闭的话会影响性能、并且占用资源
@@ -549,6 +566,7 @@ public class QueryThread implements Runnable {
 				// System.out.println("数据库连接已关闭！");
 			} catch (Exception ex) {
 				msg += ex.toString();
+				sendMessage(msg);
 			}
 		}
 		return msg;
@@ -566,9 +584,10 @@ public class QueryThread implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public void run(){
 		// 由于线程操作，最好使用状态栏显示返回的字符
 		String r = "Doing";
+		
 		switch (type) {
 		case PF:
 		case IN:
@@ -580,7 +599,7 @@ public class QueryThread implements Runnable {
 			r = queryPaiFang();
 			break;
 		case TT:
-			r = queryTaoTai();
+			r = queryTaoTai();			
 			break;
 		case M:
 			r = queryTaoTai();
@@ -591,7 +610,7 @@ public class QueryThread implements Runnable {
 		default:
 			break;
 		}
-		System.out.println(r);
+		
 	}
 
 }

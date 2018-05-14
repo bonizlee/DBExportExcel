@@ -15,7 +15,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame implements ActionListener,DBMessageListener {
 
 	private static final long serialVersionUID = 1729233823098776690L;
 	static final String[] cities = CityCode.getCities();
@@ -183,9 +183,11 @@ public class MainFrame extends JFrame implements ActionListener {
 
 		// ----状态栏，备用
 		JPanel pstatus = new JPanel();
+		status1.setText("就绪");
 		pstatus.add(status1);
 		pstatus.add(status2);
 		pstatus.add(status3);
+		cp.add(pstatus);
 		// ---状态栏
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
@@ -295,7 +297,12 @@ public class MainFrame extends JFrame implements ActionListener {
 		default:
 			return;
 		}
-		Thread t = new Thread(new QueryThread(querytype, dbname, selcity, filename));
+		Thread t = new Thread(new QueryThread(querytype, dbname, selcity, filename,this));
 		t.start();
+	}
+
+	@Override
+	public void doMessage(DBMessageEvent event) {
+		status1.setText(event.getMessage());		
 	}
 }
