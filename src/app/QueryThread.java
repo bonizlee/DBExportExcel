@@ -332,7 +332,7 @@ public class QueryThread implements Runnable {
 		ResultSet result = null;// 创建一个结果集对象
 		try {
 			con = getConn();
-			System.out.println("连接成功！");
+			sendMessage("连接成功！");
 			String fstr = citycode[0];
 			String ed;
 			if (fstr.equals("Summary") || fstr.equals("ZSJ") || fstr.equals("DXB")) {
@@ -359,6 +359,7 @@ public class QueryThread implements Runnable {
 				pre = con.prepareStatement(sql);// 实例化预编译语句
 				pre.setQueryTimeout(0);
 
+				sendMessage("开始计算"+ed);
 				result = pre.executeQuery();
 				while (result.next()) {
 					pfList.add(new PaiFang(result.getString("index_name"), result.getInt("p0"), result.getInt("p1"),
@@ -408,7 +409,7 @@ public class QueryThread implements Runnable {
 					sql = PositionFormat.format(sql, words);
 					pre = con.prepareStatement(sql);// 实例化预编译语句
 					pre.setQueryTimeout(0);
-
+					sendMessage("开始计算"+city);
 					result = pre.executeQuery();
 					while (result.next()) {
 						pfList.add(new PaiFang(result.getString("index_name"), result.getInt("p0"), result.getInt("p1"),

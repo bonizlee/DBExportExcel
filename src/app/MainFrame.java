@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,17 +49,20 @@ public class MainFrame extends JFrame implements ActionListener,DBMessageListene
 
 	public MainFrame() {
 		Container cp = getContentPane();
-		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));//
+		cp.setLayout(new BorderLayout());//
+		JPanel box=new JPanel();
+		box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
 		setTitle("导出Excel工具");
-
+		cp.add("Center", box);
 		JSplitPane jsp = new JSplitPane();// 创建分隔面板
-		cp.add(jsp);
+		box.add(jsp);
 		JTabbedPane jtp = new JTabbedPane();// 创建选项面板
 
 		JPanel hbPanel = new JPanel(new VFlowLayout());// 黄标统计
 		JPanel pfPanel = new JPanel(new VFlowLayout());// 排放统计
-		jtp.addTab("黄标统计", hbPanel);
 		jtp.addTab("排放统计", pfPanel);
+		jtp.addTab("黄标统计", hbPanel);
+		
 
 		jsp.setRightComponent(jtp);
 
@@ -187,7 +191,7 @@ public class MainFrame extends JFrame implements ActionListener,DBMessageListene
 		pstatus.add(status1);
 		pstatus.add(status2);
 		pstatus.add(status3);
-		cp.add(pstatus);
+		cp.add("South",pstatus);
 		// ---状态栏
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
